@@ -14,3 +14,21 @@ dependencies {
   compile 'net.sourceforge.nekohtml:nekohtml:1.9.+'
 }
 
+jar {
+    manifest {
+        attributes "Main-Class": "com.baeldung.fatjar.Application"
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'com.baeldung.fatjar.Application'
+    }
+    baseName = 'olipunov_memoranda'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
